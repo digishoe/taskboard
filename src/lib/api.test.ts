@@ -36,14 +36,14 @@ describe('API client', () => {
 
 			const result = await getBoards(BASE_URL, fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/boards`);
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/boards`);
 			expect(result).toEqual(boards);
 		});
 
 		it('throws on error response', async () => {
 			const fetch = mockFetch({ error: 'fail' }, 500);
 
-			await expect(getBoards(BASE_URL, fetch)).rejects.toThrow('GET /boards failed: 500');
+			await expect(getBoards(BASE_URL, fetch)).rejects.toThrow('GET /api/boards failed: 500');
 		});
 	});
 
@@ -60,7 +60,7 @@ describe('API client', () => {
 
 			const result = await getBoard(BASE_URL, 1, fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/boards/1`);
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/boards/1`);
 			expect(result).toEqual(board);
 		});
 	});
@@ -72,7 +72,7 @@ describe('API client', () => {
 
 			const result = await createBoard(BASE_URL, 'New Board', fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/boards`, {
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/boards`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: 'New Board' })
@@ -88,7 +88,7 @@ describe('API client', () => {
 
 			const result = await createColumn(BASE_URL, 1, 'In Progress', 1, fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/boards/1/columns`, {
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/boards/1/columns`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: 'In Progress', position: 1 })
@@ -110,7 +110,7 @@ describe('API client', () => {
 
 			const result = await createTask(BASE_URL, 1, 'My Task', 'A description', fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/columns/1/tasks`, {
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/columns/1/tasks`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ title: 'My Task', description: 'A description' })
@@ -132,8 +132,8 @@ describe('API client', () => {
 
 			const result = await updateTask(BASE_URL, 1, { column_id: 2, title: 'Updated' }, fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/tasks/1`, {
-				method: 'PATCH',
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/tasks/1`, {
+				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ column_id: 2, title: 'Updated' })
 			});
@@ -151,7 +151,7 @@ describe('API client', () => {
 
 			await deleteTask(BASE_URL, 1, fetch);
 
-			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/tasks/1`, {
+			expect(fetch).toHaveBeenCalledWith(`${BASE_URL}/api/tasks/1`, {
 				method: 'DELETE'
 			});
 		});
@@ -160,7 +160,7 @@ describe('API client', () => {
 			const fetch = mockFetch({ error: 'not found' }, 404);
 
 			await expect(deleteTask(BASE_URL, 99, fetch)).rejects.toThrow(
-				'DELETE /tasks/99 failed: 404'
+				'DELETE /api/tasks/99 failed: 404'
 			);
 		});
 	});

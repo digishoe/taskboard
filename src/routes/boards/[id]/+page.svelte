@@ -1,20 +1,17 @@
 <script lang="ts">
 	import BoardView from '$lib/components/board-view.svelte';
+	import { createTask, deleteTask } from '$lib/api';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	async function handleCreateTask(columnId: number, title: string, description: string) {
-		await fetch(`/api/tasks`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ column_id: columnId, title, description })
-		});
+		await createTask(data.apiBaseUrl, columnId, title, description, fetch);
 		window.location.reload();
 	}
 
 	async function handleDeleteTask(taskId: number) {
-		await fetch(`/api/tasks/${taskId}`, { method: 'DELETE' });
+		await deleteTask(data.apiBaseUrl, taskId, fetch);
 		window.location.reload();
 	}
 </script>

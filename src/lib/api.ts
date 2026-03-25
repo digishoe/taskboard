@@ -23,11 +23,11 @@ async function request<T>(
 }
 
 export async function getBoards(baseUrl: string, fetchFn: FetchFn): Promise<Board[]> {
-	return request<Board[]>(baseUrl, '/boards', fetchFn);
+	return request<Board[]>(baseUrl, '/api/boards', fetchFn);
 }
 
 export async function getBoard(baseUrl: string, id: number, fetchFn: FetchFn): Promise<Board> {
-	return request<Board>(baseUrl, `/boards/${id}`, fetchFn);
+	return request<Board>(baseUrl, `/api/boards/${id}`, fetchFn);
 }
 
 export async function createBoard(
@@ -35,7 +35,7 @@ export async function createBoard(
 	name: string,
 	fetchFn: FetchFn
 ): Promise<Board> {
-	return request<Board>(baseUrl, '/boards', fetchFn, {
+	return request<Board>(baseUrl, '/api/boards', fetchFn, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ name })
@@ -49,7 +49,7 @@ export async function createColumn(
 	position: number,
 	fetchFn: FetchFn
 ): Promise<Column> {
-	return request<Column>(baseUrl, `/boards/${boardId}/columns`, fetchFn, {
+	return request<Column>(baseUrl, `/api/boards/${boardId}/columns`, fetchFn, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ name, position })
@@ -63,7 +63,7 @@ export async function createTask(
 	description: string,
 	fetchFn: FetchFn
 ): Promise<Task> {
-	return request<Task>(baseUrl, `/columns/${columnId}/tasks`, fetchFn, {
+	return request<Task>(baseUrl, `/api/columns/${columnId}/tasks`, fetchFn, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ title, description })
@@ -76,8 +76,8 @@ export async function updateTask(
 	updates: Partial<Task>,
 	fetchFn: FetchFn
 ): Promise<Task> {
-	return request<Task>(baseUrl, `/tasks/${id}`, fetchFn, {
-		method: 'PATCH',
+	return request<Task>(baseUrl, `/api/tasks/${id}`, fetchFn, {
+		method: 'PUT',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(updates)
 	});
@@ -88,7 +88,7 @@ export async function deleteTask(
 	id: number,
 	fetchFn: FetchFn
 ): Promise<void> {
-	return request<void>(baseUrl, `/tasks/${id}`, fetchFn, {
+	return request<void>(baseUrl, `/api/tasks/${id}`, fetchFn, {
 		method: 'DELETE'
 	});
 }
