@@ -18,4 +18,11 @@ export interface Task {
 	title: string;
 	description: string;
 	position: number;
+	tags?: Tag[];
+}
+
+export interface Tag {
+	id: number;
+	name: string;
+	color: string;
 }
