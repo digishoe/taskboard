@@ -1,4 +1,4 @@
-import type { Board, Column, Task } from './types';
+import type { Board, Column, Task, Tag } from './types';
 
 type FetchFn = typeof globalThis.fetch;
 
@@ -90,5 +90,55 @@ export async function deleteTask(
 ): Promise<void> {
 	return request<void>(baseUrl, `/api/tasks/${id}`, fetchFn, {
 		method: 'DELETE'
+	});
+}
+
+export async function getTags(baseUrl: string, fetchFn: FetchFn): Promise<Tag[]> {
+	return request<Tag[]>(baseUrl, '/api/tags', fetchFn);
+}
+
+export async function createTag(
+	baseUrl: string,
+	name: string,
+	color: string,
+	fetchFn: FetchFn
+): Promise<Tag> {
+	return request<Tag>(baseUrl, '/api/tags', fetchFn, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ name, color })
+	});
+}
+
+export async function updateTag(
+	baseUrl: string,
+	id: number,
+	name: string,
+	color: string,
+	fetchFn: FetchFn
+): Promise<Tag> {
+	return request<Tag>(baseUrl, `/api/tags/${id}`, fetchFn, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ name, color })
+	});
+}
+
+export async function deleteTag(baseUrl: string, id: number, fetchFn: FetchFn): Promise<void> {
+	return request<void>(baseUrl, `/api/tags/${id}`, fetchFn, {
+		method: 'DELETE'
+	});
+}
+
+export async function setTaskTags(
+	baseUrl: string,
+	taskId: number,
+	tagIds: number[],
+	fetchFn: FetchFn
+): Promise<void> {
+	return request<void>(baseUrl, `/api/tasks/${taskId}/tags`, fetchFn, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ tag_ids: tagIds })
 	});
 }
